@@ -20,18 +20,18 @@ export const App = () => {
   const [activeButton, setActiveButton] = useState('');
   const [goods, setGoods] = useState(goodsFromServer);
   const [resetVisible, setResetVisible] = useState(false);
-  const [isRevers, setIsRevers] = useState(false);
+  const [isReverse, setIsReverse] = useState(false);
 
   const handleSort = field => {
     let sortedGoods = [...goods];
 
     if (field === 'Reverse') {
-      setIsRevers(!isRevers);
+      setIsReverse(!isReverse);
     }
 
     switch (field) {
       case 'Sort by length':
-        if (!isRevers) {
+        if (!isReverse) {
           sortedGoods.sort((a, b) => a.length - b.length);
         } else {
           sortedGoods.sort((a, b) => b.length - a.length);
@@ -39,7 +39,7 @@ export const App = () => {
 
         break;
       case 'Sort alphabetically':
-        if (!isRevers) {
+        if (!isReverse) {
           sortedGoods.sort((a, b) => a.localeCompare(b));
         } else {
           sortedGoods.sort((a, b) => b.localeCompare(a));
@@ -48,6 +48,7 @@ export const App = () => {
         break;
       case 'Reverse':
         sortedGoods.reverse();
+        setResetVisible(!isReverse);
         break;
       default:
         sortedGoods = [...goodsFromServer];
@@ -79,10 +80,9 @@ export const App = () => {
 
         <button
           type="button"
-          className={`button is-warning ${!isRevers ? isLight : ''}`}
+          className={`button is-warning ${!isReverse ? isLight : ''}`}
           onClick={() => {
             handleSort('Reverse');
-            setResetVisible(!isRevers);
           }}
         >
           Reverse
@@ -96,7 +96,7 @@ export const App = () => {
               handleSort('Reset');
               setResetVisible(false);
               setActiveButton('');
-              setIsRevers(false);
+              setIsReverse(false);
             }}
           >
             Reset
